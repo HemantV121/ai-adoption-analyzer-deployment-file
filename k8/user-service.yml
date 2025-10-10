@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  namespace: microservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: your-dockerhub-username/user-service:latest
+          ports:
+            - containerPort: 9933
+          env:
+            - name: MYSQL_HOST
+              value: mysql-db
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_DATABASE
+              value: adoption_analyzer_db
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: Pass@123
+            - name: JWT_SECRET
+              value: fsyfashvagsuygsqagjhabsmbqw231t67512736teuqbk32t3781
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+  namespace: microservices
+spec:
+  selector:
+    app: user-service
+  ports:
+    - port: 9933
+      targetPort: 9933
