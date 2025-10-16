@@ -1,45 +1,48 @@
+# AI Job Service Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bookmark-service
+  name: aijob-service
   namespace: microservices
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bookmark-service
+      app: aijob-service
   template:
     metadata:
       labels:
-        app: bookmark-service
+        app: aijob-service
     spec:
       containers:
-        - name: bookmark-service
-          image: your-dockerhub-username/bookmark-service:latest
+        - name: aijob-service
+          image: hemant1vyas/aijob-service:latest
           ports:
-            - containerPort: 9966
+            - containerPort: 9955
           env:
             - name: MONGO_USER
-              value: user
+              value: admin
             - name: MONGO_PASSWORD
               value: password
             - name: MONGO_HOST
-              value: mongodb-bookmark
+              value: mongodb-aijob
             - name: MONGO_PORT
               value: "27017"
             - name: MONGO_DATABASE
-              value: bookmark_db
+              value: aijob_db
             - name: JWT_SECRET
               value: fsyfashvagsuygsqagjhabsmbqw231t67512736teuqbk32t3781
 ---
+# AI Job Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: bookmark-service
+  name: aijob-service
   namespace: microservices
 spec:
   selector:
-    app: bookmark-service
+    app: aijob-service
   ports:
-    - port: 9966
-      targetPort: 9966
+    - port: 9955
+      targetPort: 9955
+      protocol: TCP

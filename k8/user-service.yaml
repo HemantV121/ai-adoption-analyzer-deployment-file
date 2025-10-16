@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-service
+  name: user-service
   namespace: microservices
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth-service
+      app: user-service
   template:
     metadata:
       labels:
-        app: auth-service
+        app: user-service
     spec:
       containers:
-        - name: auth-service
-          image: your-dockerhub-username/auth-service:latest
+        - name: user-service
+          image: hemant1vyas/user-service:latest
           ports:
-            - containerPort: 9911
+            - containerPort: 9933
           env:
             - name: MYSQL_HOST
               value: mysql-db
@@ -35,11 +35,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-service
+  name: user-service
   namespace: microservices
 spec:
   selector:
-    app: auth-service
+    app: user-service
   ports:
-    - port: 9911
-      targetPort: 9911
+    - port: 9933
+      targetPort: 9933
+      protocol: TCP
